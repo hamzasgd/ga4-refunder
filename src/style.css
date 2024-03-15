@@ -1,0 +1,8 @@
+#refund-form input {
+	margin-bottom: 0.75em;
+	display: inline-block;
+}
+
+#validation-message {
+	display: none;
+}

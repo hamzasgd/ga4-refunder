@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>GA4 Refundr by MeasureSchool</title>
+		<link rel="stylesheet" href="/src/style.css" />
+	</head>
+	<body>
+		<section class="main">
+			<div class="row">
+				<div class="col-lg">
+					<form id="refund-form">
+						<label for="apiKey">Measurement Protocol API:</label>
+						<input type="text" name="apiKey" id="apiKey" required />
+						<br />
+
+						<label for="measurementId">GA4 Measurement ID:</label>
+						<input
+							type="text"
+							name="measurementId"
+							id="measurementId"
+							required />
+						<br />
+
+						<label for="clientId">Client ID:</label>
+						<input
+							type="text"
+							name="clientId"
+							id="clientId"
+							value="iMfucbt3xXyIK4QT6LW5BnuT7uv1pTC88NHUFcXPcRs=.1709548197"
+							required />
+						<br />
+
+						<label for="transactionId">Transaction ID:</label>
+						<input
+							type="text"
+							name="transactionId"
+							id="transactionId"
+							value="4773"
+							required />
+						<br />
+
+						<label for="transactionAmount">Transaction Amount:</label>
+						<input
+							type="text"
+							name="transactionAmount"
+							id="transactionAmount"
+							value="1"
+							required />
+						<br />
+
+						<label for="currency">Currency</label>
+						<input
+							type="text"
+							name="currency"
+							id="currency"
+							value="USD"
+							required />
+						<br />
+
+						<div id="field-container"></div>
+						<button type="button" id="add-field-group">Add Item</button>
+						<br />
+						<br />
+
+						<input type="checkbox" id="debug" name="debug" value="true" />
+						<label for="debug">Validate the request in debug server</label>
+
+						<br />
+						<br />
+
+						<div id="validation-message">
+							Validation Box content goes here....
+						</div>
+						<button type="submit" id="submit">Send Refund</button>
+					</form>
+
+					<div>
+						<h2>URL</h2>
+						<pre id="url-block"></pre>
+					</div>
+
+					<div>
+						<h2>Payload</h2>
+						<pre id="payload-block"></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<script src="/src/app.js"></script>
+	</body>
+</html>

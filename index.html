@@ -84,18 +84,18 @@
 													placeholder="Transaction ID"
 													name="transactionId"
 													id="transactionId"
-													value=""
+													value="T12345"
 													required />
 											</div>
 											<div class="col-sm-4 mb-2">
 												<input
-													type="text"
+													type="number"
 													class="form-control"
 													aria-label="Transaction Value"
 													placeholder="Transaction Value"
 													name="transactionAmount"
 													id="transactionAmount"
-													value=""
+													value="1.99"
 													required />
 											</div>
 											<div class="col-sm-4">
@@ -106,7 +106,7 @@
 													placeholder="Currency"
 													name="currency"
 													id="currency"
-													value=""
+													value="USD"
 													required />
 											</div>
 										</div>
@@ -212,11 +212,16 @@
 				<div class="col-lg mt-3 p-4">
 					<div class="card bg-body-tertiary border-0 shadow">
 						<div class="card-header border-0 payload-console-header fw-bold">
-							Event Payload
+							Console
 						</div>
 						<div class="card-body">
+							<h6 class="mt-4">URL</h6>
 							<pre id="url-block" class="text-wrap"></pre>
+							<h6 class="mt-5">Event Payload</h6>
 							<pre id="payload-block"></pre>
+						</div>
+						<div class="card-body bg-body-secondary">
+							<pre id="console-message"></pre>
 						</div>
 					</div>
 				</div>

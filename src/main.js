@@ -1,5 +1,3 @@
-console.log("app.js loaded...");
-
 const clientIdInput = document.getElementById("clientId");
 const concealedField = document.querySelector(".concealed-field");
 const currencyInput = document.getElementById("currency");
@@ -14,6 +12,16 @@ const urlBlock = document.getElementById("url-block");
 const validationBox = document.getElementById("validation-message");
 
 document.addEventListener("DOMContentLoaded", () => {
+	// Log messages in HTML
+	const logMessage = (message) => {
+		const consoleElement = document.getElementById("console-message");
+		if (consoleElement) {
+			consoleElement.textContent += message + "\n";
+		} else {
+			console.error("Error: Console element not found.");
+		}
+	};
+
 	// Retrieve form values from local storage
 	const getFormValues = () => ({
 		measurementId: localStorage.getItem("measurementId") || "",
@@ -41,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			aria-label="Item ID"
 			placeholder="Item ID"
 			name="itemId[]"
+			value="item_01"
 			required />
 			</div>
 		<div class="mb-1 font-monospace">
@@ -49,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				class="form-control"
 				aria-label="Quantity"
 				placeholder="Quantity"
+				value="2"
 				name="quantity[]" />
 		</div>
 		<div class="mb-1 font-monospace">
@@ -57,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				class="form-control"
 				aria-label="Price"
 				placeholder="Price"
+				value="0.55"
 				name="price[]" />
 		</div>
 		<div class="mb-2">
@@ -186,15 +197,27 @@ document.addEventListener("DOMContentLoaded", () => {
 				body: JSON.stringify(payload),
 			});
 
+			// Check if response status is 204 (No Content), indicating no response body
+			if (response.status === 204) {
+				// console.log("✅ Event successfully sent via Measurement Protocol.");
+				logMessage("✅ Event successfully sent via Measurement Protocol.");
+				return; // Exit function since there's no response body
+			}
+
 			const data = await response.json();
 			const serverResponse = data.validationMessages[0]?.description || "";
 			const messageToLog = serverResponse
 				? `😭 ${serverResponse}`
 				: "✅ No errors found in payload";
 			console.log("Server response:", messageToLog);
+			logMessage(messageToLog);
 		} catch (error) {
 			// Handle errors
-			console.error("Error:", error);
+			if (error instanceof SyntaxError) {
+				console.error("Error: Server response not in JSON format.");
+			} else {
+				console.error("Error:", error);
+			}
 		}
 	};
 

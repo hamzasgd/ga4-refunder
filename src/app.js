@@ -1,20 +1,19 @@
 console.log("app.js loaded...");
 
+const clientIdInput = document.getElementById("clientId");
 const concealedField = document.querySelector(".concealed-field");
+const currencyInput = document.getElementById("currency");
 const debugCheckbox = document.getElementById("debug");
 const passwordInput = document.getElementById("apiKey");
 const payloadBlock = document.getElementById("payload-block");
 const submitButton = document.getElementById("submit");
 const toggleIcon = document.getElementById("togglePassword");
+const transactionAmountInput = document.getElementById("transactionAmount");
+const transactionIdInput = document.getElementById("transactionId");
 const urlBlock = document.getElementById("url-block");
 const validationBox = document.getElementById("validation-message");
 
 document.addEventListener("DOMContentLoaded", () => {
-	const clientIdInput = document.querySelector("#clientId");
-	const currencyInput = document.querySelector("#currency");
-	const transactionAmountInput = document.querySelector("#transactionAmount");
-	const transactionIdInput = document.querySelector("#transactionId");
-
 	// Retrieve form values from local storage
 	const getFormValues = () => ({
 		measurementId: localStorage.getItem("measurementId") || "",
@@ -26,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	console.log(getFormValues());
 
 	const updateInputFields = () => {
-		document.querySelector("#measurementId").value = measurementId;
-		document.querySelector("#apiKey").value = apiSecret;
+		document.getElementById("measurementId").value = measurementId;
+		document.getElementById("apiKey").value = apiSecret;
 	};
 
 	const addItemGroup = () => {
@@ -123,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				{
 					name: "refund",
 					params: {
-						currency: currencyInput.value,
+						currency: currencyInput.value.toUpperCase(),
 						transaction_id: transactionIdInput.value,
 						value: transactionAmountInput.value,
 						items,
@@ -168,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				{
 					name: "refund",
 					params: {
-						currency: currencyInput.value,
+						currency: currencyInput.value.toUpperCase(),
 						transaction_id: transactionIdInput.value,
 						value: transactionAmountInput.value,
 						items,
@@ -209,8 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Event listener to update local storage when input values change
 	document.querySelectorAll("#measurementId, #apiKey").forEach((input) => {
 		input.addEventListener("input", () => {
-			measurementId = document.querySelector("#measurementId").value;
-			apiSecret = document.querySelector("#apiKey").value;
+			measurementId = document.getElementById("measurementId").value;
+			apiSecret = document.getElementById("apiKey").value;
 
 			localStorage.setItem("measurementId", measurementId);
 			localStorage.setItem("apiSecret", apiSecret);
@@ -225,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	// Event listener to send refund payload on form submit
-	document.querySelector("#refund-form").addEventListener("submit", sendRefund);
+	document.getElementById("refund-form").addEventListener("submit", sendRefund);
 
 	// Event listener to update code block on form field change
 	document

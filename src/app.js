@@ -1,14 +1,13 @@
-// G-9QWBNVSMPX
-// HtYuSNHJRFGFDIF9VMyvkQ
-// iMfucbt3xXyIK4QT6LW5BnuT7uv1pTC88NHUFcXPcRs=.1709548197
-
 console.log("app.js loaded...");
 
 const submitButton = document.getElementById("submit");
 const debugCheckbox = document.getElementById("debug");
-const validationBox = document.querySelector("#validation-message");
+const validationBox = document.getElementById("validation-message");
 const urlBlock = document.getElementById("url-block");
 const payloadBlock = document.getElementById("payload-block");
+const passwordInput = document.getElementById("apiKey");
+const toggleIcon = document.getElementById("togglePassword");
+const concealedField = document.querySelector(".concealed-field");
 
 document.addEventListener("DOMContentLoaded", () => {
 	const clientIdInput = document.querySelector("#clientId");
@@ -239,22 +238,18 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		});
 
-	// // Event listener to reveal API key
-	// const passwordInput = document.getElementById("apiKey");
-	// const toggleIcon = document.getElementById("togglePassword");
-	// const inputGroup = document.querySelector(".input-group");
-
-	// inputGroup.addEventListener("click", function () {
-	// 	if (passwordInput.type === "password") {
-	// 		passwordInput.type = "text";
-	// 		toggleIcon.classList.remove("bi-eye-slash");
-	// 		toggleIcon.classList.add("bi-eye");
-	// 	} else {
-	// 		passwordInput.type = "password";
-	// 		toggleIcon.classList.remove("bi-eye");
-	// 		toggleIcon.classList.add("bi-eye-slash");
-	// 	}
-	// });
+	// Event listener to reveal API key
+	concealedField.addEventListener("click", function () {
+		if (passwordInput.type === "password") {
+			passwordInput.type = "text";
+			toggleIcon.classList.remove("bi-eye-slash");
+			toggleIcon.classList.add("bi-eye");
+		} else {
+			passwordInput.type = "password";
+			toggleIcon.classList.remove("bi-eye");
+			toggleIcon.classList.add("bi-eye-slash");
+		}
+	});
 
 	// Call functions
 	updateInputFields();

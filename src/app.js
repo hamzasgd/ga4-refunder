@@ -1,13 +1,13 @@
 console.log("app.js loaded...");
 
-const submitButton = document.getElementById("submit");
-const debugCheckbox = document.getElementById("debug");
-const validationBox = document.getElementById("validation-message");
-const urlBlock = document.getElementById("url-block");
-const payloadBlock = document.getElementById("payload-block");
-const passwordInput = document.getElementById("apiKey");
-const toggleIcon = document.getElementById("togglePassword");
 const concealedField = document.querySelector(".concealed-field");
+const debugCheckbox = document.getElementById("debug");
+const passwordInput = document.getElementById("apiKey");
+const payloadBlock = document.getElementById("payload-block");
+const submitButton = document.getElementById("submit");
+const toggleIcon = document.getElementById("togglePassword");
+const urlBlock = document.getElementById("url-block");
+const validationBox = document.getElementById("validation-message");
 
 document.addEventListener("DOMContentLoaded", () => {
 	const clientIdInput = document.querySelector("#clientId");

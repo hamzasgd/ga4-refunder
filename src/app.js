@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			<button
 				class="btn btn-danger btn-sm remove-item-group mb-4 mt-2"
 				type="button">
-				Delete item
+				Remove
 			</button>
 		</div>
         `;

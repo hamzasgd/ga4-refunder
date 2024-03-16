@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Function to display URL and payload in code blocks
 	const displayCodeBlock = () => {
 		const url = updateUrl();
-		urlBlock.textContent = `URL: ${url}`;
+		urlBlock.textContent = `${url}`;
 
 		const items = getItemsData();
 		const payload = {
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				},
 			],
 		};
-		payloadBlock.textContent = `Payload: \n${JSON.stringify(payload, null, 2)}`;
+		payloadBlock.textContent = `${JSON.stringify(payload, null, 2)}`;
 	};
 
 	// Construct items array

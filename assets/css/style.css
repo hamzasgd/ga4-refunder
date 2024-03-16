@@ -45,3 +45,7 @@ a {
 button.remove-item-group {
 	height: 34px;
 }
+
+footer {
+	margin-top: 200px;
+}

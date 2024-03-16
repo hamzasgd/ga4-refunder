@@ -21,213 +21,287 @@
 		<link rel="stylesheet" href="/assets/css/style.css" />
 	</head>
 	<body>
-		<div class="container mt-4">
-			<div class="row gx-5">
-				<div class="col-lg-6">
-					<div class="row">
-						<div class="col-sm">
-							<!-- 
+		<!-- Header -->
+		<header class="text-bg-light border-bottom">
+			<div class="container">
+				<nav class="navbar bg-body-tertiary py-3">
+					<div class="container-fluid">
+						<a class="navbar-brand text-uppercase text-secondary fs-6" href="#">
+							<img
+								src="/assets/img/ms-logo-wide.png"
+								alt="MeasureSchool Logo"
+								height="50"
+								class="d-inline-block align-text-middle" />
+							&nbsp;&nbsp;GA4 Refunder
+
+							<sup>
+								<span
+									class="text-lowercase badge rounded-pill text-bg-warning fw-normal">
+									v1.0.0
+								</span>
+							</sup>
+						</a>
+
+						<span class="navbar-text">
+							A simple app to send refund events to GA4 via Measurement Protocol
+						</span>
+					</div>
+				</nav>
+			</div>
+		</header>
+
+		<!-- Main -->
+		<section class="main">
+			<div class="container mt-4">
+				<div class="row gx-5">
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="col-sm">
+								<!-- 
 								Form Start
 							-->
-							<form class="row g-3 mt-4" id="refund-form">
-								<div class="card text-bg-light border border-light-subtle">
-									<div class="card-body font-monospace">
-										<!-- Measurement ID & MP API -->
-										<div class="row">
-											<div class="col-md-4">
-												<input
-													type="text"
-													class="form-control mb-2"
-													aria-label="Measurement ID"
-													placeholder="GA4 Measurement ID"
-													name="measurementId"
-													id="measurementId"
-													required />
+								<form class="row g-3 mt-4" id="refund-form">
+									<div class="card text-bg-light border border-light-subtle">
+										<div class="card-body font-monospace">
+											<!-- Measurement ID & MP API -->
+											<div class="row">
+												<div class="col-md-4">
+													<input
+														type="text"
+														class="form-control mb-2"
+														aria-label="Measurement ID"
+														placeholder="GA4 Measurement ID"
+														name="measurementId"
+														id="measurementId"
+														required />
+												</div>
+
+												<div class="col-md input-group concealed-field mb-2">
+													<input
+														type="password"
+														class="form-control"
+														aria-label="Measurement Protocol API"
+														placeholder="Measurement Protocol API"
+														name="apiKey"
+														id="apiKey"
+														aria-describedby="togglePassword"
+														required />
+													<span class="input-group-text">
+														<i class="bi bi-eye-slash" id="togglePassword"></i>
+													</span>
+												</div>
 											</div>
 
-											<div class="col-md input-group concealed-field mb-2">
-												<input
-													type="password"
-													class="form-control"
-													aria-label="Measurement Protocol API"
-													placeholder="Measurement Protocol API"
-													name="apiKey"
-													id="apiKey"
-													aria-describedby="togglePassword"
-													required />
-												<span class="input-group-text">
-													<i class="bi bi-eye-slash" id="togglePassword"></i>
-												</span>
-											</div>
-										</div>
-
-										<!-- Client ID -->
-										<div class="mb-2">
-											<input
-												type="text"
-												class="form-control"
-												aria-label="Client ID"
-												placeholder="Client ID"
-												name="clientId"
-												id="clientId"
-												value=""
-												required />
-										</div>
-
-										<!-- Transaction ID, Value & Currency -->
-										<div class="row">
-											<div class="col-sm-4 mb-2">
+											<!-- Client ID -->
+											<div class="mb-2">
 												<input
 													type="text"
 													class="form-control"
-													aria-label="Transaction ID"
-													placeholder="Transaction ID"
-													name="transactionId"
-													id="transactionId"
+													aria-label="Client ID"
+													placeholder="Client ID"
+													name="clientId"
+													id="clientId"
 													value=""
 													required />
 											</div>
-											<div class="col-sm-4 mb-2">
-												<input
-													type="number"
-													class="form-control"
-													aria-label="Transaction Value"
-													placeholder="Transaction Value"
-													name="transactionAmount"
-													id="transactionAmount"
-													value=""
-													required />
-											</div>
-											<div class="col-sm-4">
-												<input
-													type="text"
-													class="form-control"
-													aria-label="Currency"
-													placeholder="Currency"
-													name="currency"
-													id="currency"
-													value=""
-													required />
+
+											<!-- Transaction ID, Value & Currency -->
+											<div class="row">
+												<div class="col-sm-4 mb-2">
+													<input
+														type="text"
+														class="form-control"
+														aria-label="Transaction ID"
+														placeholder="Transaction ID"
+														name="transactionId"
+														id="transactionId"
+														value=""
+														required />
+												</div>
+												<div class="col-sm-4 mb-2">
+													<input
+														type="number"
+														class="form-control"
+														aria-label="Transaction Value"
+														placeholder="Transaction Value"
+														name="transactionAmount"
+														id="transactionAmount"
+														value=""
+														required />
+												</div>
+												<div class="col-sm-4">
+													<input
+														type="text"
+														class="form-control"
+														aria-label="Currency"
+														placeholder="Currency"
+														name="currency"
+														id="currency"
+														value=""
+														required />
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 
-								<!-- Items group -->
-								<div class="card text-bg-light border border-light-subtle">
-									<div class="card-body">
-										<!--  Items div - groups will get appended -->
-										<div id="container"></div>
-										<!-- End of items dev -->
-										<div class="d-grid gap-2 d-md-flex">
-											<button
-												class="btn btn-primary btn-sm rounded-pill px-3 py-2"
-												type="button"
-												id="add-item-group">
-												Add item
-											</button>
+									<!-- Items group -->
+									<div class="card text-bg-light border border-light-subtle">
+										<div class="card-body">
+											<!--  Items div - groups will get appended -->
+											<div id="container"></div>
+											<!-- End of items dev -->
+											<div class="d-grid gap-2 d-md-flex">
+												<button
+													class="btn btn-primary btn-sm rounded-pill px-3 py-2"
+													type="button"
+													id="add-item-group">
+													Add item
+												</button>
+											</div>
 										</div>
 									</div>
-								</div>
 
-								<!-- Validation Toggle -->
-								<div class="form-check form-switch mt-5">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										role="switch"
-										value="true"
-										id="debug"
-										name="debug" />
-									<label class="form-check-label fw-bold" for="debug">
-										Validate the payload against the MP Validation Server
-									</label>
-									<div class="mt-2 validation-toggle">
-										<div class="card border-0 p-2 text-muted">
+									<!-- Validation Toggle -->
+									<div class="form-check form-switch mt-5">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											role="switch"
+											value="true"
+											id="debug"
+											name="debug" />
+										<label class="form-check-label fw-bold" for="debug">
+											Validate the payload against the MP Validation Server
+										</label>
+										<div class="mt-2 validation-toggle">
+											<div class="card border-0 p-2 text-muted">
+												<ul>
+													<li>
+														The GA4 Measurement Protocol doesn't return
+														<code>HTTP</code>
+														error codes even if an event is malformed or missing
+														required parameters. So, make use of this feature to
+														validate your payload before sending it to the
+														production server.
+													</li>
+													<li>
+														Sending events to the validation server ensures
+														accuracy without any impact on GA4 reports. You
+														won't see these events in the real-time report or
+														BigQuery export.
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+
+									<!-- Validation message -->
+									<div
+										class="card border-warning-subtle mb-3 p-0"
+										id="validation-message">
+										<div class="card-header text-bg-warning border-0">
+											<strong>Important</strong>
+										</div>
+										<div class="card-body">
 											<ul>
 												<li>
-													The GA4 Measurement Protocol doesn't return
-													<code>HTTP</code>
-													error codes even if an event is malformed or missing
-													required parameters. So, make use of this feature to
-													validate your payload before sending it to the
-													production server.
+													Please note that the Validation Server does not
+													validate the
+													<code>api_secret</code>
+													or
+													<code>measurement_id</code>
+													. Therefore, double-check these values to ensure they
+													are accurate before sending them to the production
+													server.
 												</li>
+
 												<li>
-													Sending events to the validation server ensures
-													accuracy without any impact on GA4 reports. You won't
-													see these events in the real-time report or BigQuery
-													export.
+													Refer
+													<a
+														href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag"
+														target="_blank">
+														Measurement Protocol documentation
+													</a>
+
+													<i class="bi bi-box-arrow-up-right">&nbsp;</i>
+													to learn more.
 												</li>
 											</ul>
 										</div>
 									</div>
-								</div>
 
-								<!-- Validation message -->
-								<div
-									class="card border-warning-subtle mb-3 p-0"
-									id="validation-message">
-									<div class="card-header text-bg-warning border-0">
-										<strong>Important</strong>
-									</div>
-									<div class="card-body">
-										<ul>
-											<li>
-												Please note that the Validation Server does not validate
-												the
-												<code>api_secret</code>
-												or
-												<code>measurement_id</code>
-												. Therefore, double-check these values to ensure they
-												are accurate before sending them to the production
-												server.
-											</li>
-
-											<li>
-												Refer
-												<a
-													href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag"
-													target="_blank">
-													Measurement Protocol documentation
-												</a>
-
-												<i class="bi bi-box-arrow-up-right">&nbsp;</i>
-												to learn more.
-											</li>
-										</ul>
-									</div>
-								</div>
-
-								<!-- Submit Button -->
-								<button
-									type="submit"
-									class="btn mt-1 fw-bold"
-									id="submit"></button>
-							</form>
+									<!-- Submit Button -->
+									<button
+										type="submit"
+										class="btn mt-1 fw-bold"
+										id="submit"></button>
+								</form>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="col-lg-6 mt-3 p-4">
-					<div class="card bg-body-tertiary border-0 shadow">
-						<div
-							class="card-header border-0 payload-console-header fw-bold text-light">
-							Console
-						</div>
-						<div class="card-body">
-							<p class="mt-3 fw-bold">URL</p>
-							<pre id="url-block" class="text-wrap"></pre>
-							<p class="mt-3 fw-bold">Payload</p>
-							<pre id="payload-block"></pre>
-						</div>
-						<div class="card-body bg-body-secondary pb-0 text-break">
-							<pre id="console-message" class="text-break"></pre>
+					<div class="col-lg-6 mt-3 p-4">
+						<div class="card bg-body-tertiary border-0 shadow">
+							<div
+								class="card-header border-0 payload-console-header fw-bold text-light">
+								Console
+							</div>
+							<div class="card-body">
+								<p class="mt-3 fw-bold">URL</p>
+								<pre id="url-block" class="text-wrap"></pre>
+								<p class="mt-3 fw-bold">Payload</p>
+								<pre id="payload-block"></pre>
+							</div>
+							<div class="card-body bg-body-secondary pb-0 text-break">
+								<pre id="console-message" class="text-break"></pre>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
+
+		<!-- Footer -->
+		<footer>
+			<div
+				class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+				<p class="col-md-4 mb-0 text-body-secondary">
+					Made with ♥️ by
+					<a
+						href="https://measureschool.com?utm_source=resources&utm_medium=free-apps&utm_campaign=ga4-refunder-app"
+						target="_blank">
+						MeasureSchool
+					</a>
+				</p>
+
+				<ul class="nav col-md-4 justify-content-end">
+					<li class="nav-item">
+						<a
+							href="https://measureschool.com/blog/?utm_source=resources&utm_medium=free-apps&utm_campaign=ga4-refunder-app"
+							class="nav-link px-2 text-body-secondary"
+							target="_blank">
+							Blog
+						</a>
+					</li>
+					<li class="nav-item">
+						<a
+							href="https://measureschool.com/measure-masters/?utm_source=resources&utm_medium=free-apps&utm_campaign=ga4-refunder-app"
+							class="nav-link px-2 text-body-secondary"
+							target="_blank">
+							MeasureMasters
+						</a>
+					</li>
+					<li class="nav-item">
+						<a
+							href="https://measureschool.com/services/?utm_source=resources&utm_medium=free-apps&utm_campaign=ga4-refunder-app"
+							class="nav-link px-2 text-body-secondary"
+							target="_blank">
+							Implementation Services
+						</a>
+					</li>
+				</ul>
+			</div>
+		</footer>
 
 		<script src="/assets/js/main.js"></script>
 	</body>

@@ -1,5 +1,6 @@
 const clientIdInput = document.getElementById("clientId");
 const concealedField = document.querySelector(".concealed-field");
+const consoleElement = document.getElementById("console-message");
 const currencyInput = document.getElementById("currency");
 const debugCheckbox = document.getElementById("debug");
 const passwordInput = document.getElementById("apiKey");
@@ -12,16 +13,6 @@ const urlBlock = document.getElementById("url-block");
 const validationBox = document.getElementById("validation-message");
 
 document.addEventListener("DOMContentLoaded", () => {
-	// Log messages in HTML
-	const logMessage = (message) => {
-		const consoleElement = document.getElementById("console-message");
-		if (consoleElement) {
-			consoleElement.textContent += message + "\n";
-		} else {
-			console.error("Error: Console element not found.");
-		}
-	};
-
 	// Retrieve form values from local storage
 	const getFormValues = () => ({
 		measurementId: localStorage.getItem("measurementId") || "",
@@ -30,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	let { measurementId, apiSecret } = getFormValues();
 
-	console.log(getFormValues());
+	// console.log(getFormValues());
 
 	const updateInputFields = () => {
 		document.getElementById("measurementId").value = measurementId;
@@ -42,40 +33,42 @@ document.addEventListener("DOMContentLoaded", () => {
 		const itemGroup = document.createElement("div");
 		itemGroup.classList.add("row,item-group,p-2"); // Add class for styling purposes
 		itemGroup.innerHTML = `
-		<div class="mb-1 font-monospace">
+		<div class="row">
+		<div class="col-sm-3 mb-1 font-monospace">
 		<input
 			type="text"
 			class="form-control"
 			aria-label="Item ID"
 			placeholder="Item ID"
 			name="itemId[]"
-			value="item_01"
+			value=""
 			required />
 			</div>
-		<div class="mb-1 font-monospace">
+		<div class="col-sm-3 mb-1 font-monospace">
 			<input
 				type="number"
 				class="form-control"
 				aria-label="Quantity"
 				placeholder="Quantity"
-				value="2"
+				value=""
 				name="quantity[]" />
 		</div>
-		<div class="mb-1 font-monospace">
+		<div class="col-sm-3 mb-1 font-monospace">
 			<input
-				type="text"
+				type="number"
 				class="form-control"
 				aria-label="Price"
 				placeholder="Price"
-				value="0.55"
+				value=""
 				name="price[]" />
 		</div>
-		<div class="mb-2">
+		<div class="col-sm-3 mb-2">
 			<button
-				class="btn btn-danger btn-sm remove-item-group mb-4 mt-2"
+				class="btn btn-danger btn-sm rounded-pill remove-item-group mb-4 px-3"
 				type="button">
 				Remove
 			</button>
+		</div>
 		</div>
         `;
 		container.appendChild(itemGroup);
@@ -114,17 +107,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	const updateUrl = () => {
 		const endPoint = debugCheckbox.checked ? "debug/mp/collect" : "mp/collect";
 		const url = `https://www.google-analytics.com/${endPoint}?measurement_id=${measurementId}&api_secret=${apiSecret}`;
-
-		if (debugCheckbox.checked) {
-			console.info(`Debug url enabled: ${url}`);
-		}
 		return url;
 	};
 
 	// Function to display URL and payload in code blocks
 	const displayCodeBlock = () => {
 		const url = updateUrl();
-		urlBlock.textContent = `${url}`;
+		urlBlock.textContent = `${url.replace(/\?.*$/, "")}`;
 
 		const items = getItemsData();
 		const payload = {
@@ -142,6 +131,25 @@ document.addEventListener("DOMContentLoaded", () => {
 			],
 		};
 		payloadBlock.textContent = `${JSON.stringify(payload, null, 2)}`;
+	};
+
+	// Log messages in console
+	const logMessage = (message) => {
+		if (consoleElement) {
+			// Get current date and time
+			const now = new Date();
+			const date = now.toLocaleDateString("en-CA");
+			const time = now.toLocaleTimeString("en-CA", { hour12: false });
+			const timestamp = `[${date} ${time}]`;
+
+			// Construct log message with timestamp
+			const logEntry = `${timestamp} ${message}\n`;
+
+			// Append log entry to console element
+			consoleElement.textContent += logEntry;
+		} else {
+			console.error("Error: Console element not found.");
+		}
 	};
 
 	// Construct items array
@@ -186,9 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				},
 			],
 		};
-		const payloadString = JSON.stringify(payload, null, 2);
-		console.log("%cPayload:", "font-weight: bold; color: blue;");
-		console.log(payloadString);
 
 		try {
 			const url = updateUrl(); // Update URL when input values change
@@ -199,24 +204,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			// Check if response status is 204 (No Content), indicating no response body
 			if (response.status === 204) {
-				// console.log("✅ Event successfully sent via Measurement Protocol.");
-				logMessage("✅ Event successfully sent via Measurement Protocol.");
+				logMessage(
+					`✅ ${transactionIdInput.value} - Refund event sent to MP 💪`
+				);
 				return; // Exit function since there's no response body
 			}
 
 			const data = await response.json();
 			const serverResponse = data.validationMessages[0]?.description || "";
 			const messageToLog = serverResponse
-				? `😭 ${serverResponse}`
-				: "✅ No errors found in payload";
-			console.log("Server response:", messageToLog);
+				? `❌ ${serverResponse} 😭`
+				: `✅ ${transactionIdInput.value} - Valid payload 👌`;
 			logMessage(messageToLog);
 		} catch (error) {
 			// Handle errors
 			if (error instanceof SyntaxError) {
-				console.error("Error: Server response not in JSON format.");
+				logMessage("😭 Server response not in JSON format.");
 			} else {
-				console.error("Error:", error);
+				logMessage(error);
 			}
 		}
 	};

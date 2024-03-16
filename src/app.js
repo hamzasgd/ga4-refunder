@@ -1,9 +1,10 @@
 // G-9QWBNVSMPX
 // HtYuSNHJRFGFDIF9VMyvkQ
+// iMfucbt3xXyIK4QT6LW5BnuT7uv1pTC88NHUFcXPcRs=.1709548197
 
 console.log("app.js loaded...");
 
-const button = document.getElementById("submit");
+const submitButton = document.getElementById("submit");
 const debugCheckbox = document.getElementById("debug");
 const validationBox = document.querySelector("#validation-message");
 const urlBlock = document.getElementById("url-block");
@@ -33,22 +34,47 @@ document.addEventListener("DOMContentLoaded", () => {
 	const addFieldGroup = () => {
 		const container = document.getElementById("field-container");
 		const fieldGroup = document.createElement("div");
-		fieldGroup.classList.add("field-group"); // Add class for styling purposes
+		fieldGroup.classList.add("row,item-group,p-2"); // Add class for styling purposes
 		fieldGroup.innerHTML = `
-            <label>Item ID:</label>
-            <input type="text" name="itemId[]" required>
-            <label>Quantity:</label>
-            <input type="number" name="quantity[]">
-            <label>Price:</label>
-            <input type="text" name="price[]">
-            <button type="button" class="remove-field-group">Remove</button>
+		<div class="mb-1">
+		<input
+			type="text"
+			class="form-control"
+			aria-label="Item ID"
+			placeholder="Item ID"
+			name="itemId[]"
+			required />
+	</div>
+	<div class="mb-1">
+		<input
+			type="number"
+			class="form-control"
+			aria-label="Quantity"
+			placeholder="Quantity"
+			name="quantity[]" />
+	</div>
+	<div class="mb-1">
+		<input
+			type="text"
+			class="form-control"
+			aria-label="Price"
+			placeholder="Price"
+			name="price[]" />
+	</div>
+	<div class="mb-2">
+		<button
+			class="btn btn-danger remove-item-group mb-4"
+			type="button">
+			Delete item
+		</button>
+	</div>
         `;
 		container.appendChild(fieldGroup);
 
 		fieldGroup
-			.querySelector(".remove-field-group")
+			.querySelector(".remove-item-group")
 			.addEventListener("click", function () {
-				this.parentNode.remove();
+				this.parentNode.parentNode.remove();
 				displayCodeBlock(); // Update code blocks when a field group is removed
 			});
 
@@ -62,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Update submit button label when the validation server debugCheckbox is checked
 	const updateButtonText = () => {
-		button.textContent = debugCheckbox.checked
+		submitButton.textContent = debugCheckbox.checked
 			? "Validate the request"
 			: "Send Refund";
 	};
@@ -187,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	// Event listener to add item field groups
-	document.getElementById("add-field-group").addEventListener("click", () => {
+	document.getElementById("add-item-group").addEventListener("click", () => {
 		addFieldGroup(); // Update code blocks when a new field group is added
 	});
 
@@ -204,6 +230,23 @@ document.addEventListener("DOMContentLoaded", () => {
 				displayCodeBlock(); // Update code blocks in real-time
 			});
 		});
+
+	// // Event listener to reveal API key
+	// const passwordInput = document.getElementById("apiKey");
+	// const toggleIcon = document.getElementById("togglePassword");
+	// const inputGroup = document.querySelector(".input-group");
+
+	// inputGroup.addEventListener("click", function () {
+	// 	if (passwordInput.type === "password") {
+	// 		passwordInput.type = "text";
+	// 		toggleIcon.classList.remove("bi-eye-slash");
+	// 		toggleIcon.classList.add("bi-eye");
+	// 	} else {
+	// 		passwordInput.type = "password";
+	// 		toggleIcon.classList.remove("bi-eye");
+	// 		toggleIcon.classList.add("bi-eye-slash");
+	// 	}
+	// });
 
 	// Call functions
 	updateInputFields();

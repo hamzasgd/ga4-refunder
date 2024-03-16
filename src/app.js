@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Update submit button label when the validation server debugCheckbox is checked
 	const updateSubmitButton = () => {
 		submitButton.textContent = debugCheckbox.checked
-			? "Validate the request"
+			? "Validate Request"
 			: "Send Refund";
 		// Check if debugCheckbox is checked
 		if (debugCheckbox.checked) {

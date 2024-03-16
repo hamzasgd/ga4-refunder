@@ -3,9 +3,27 @@
 body {
 	font-family: "Poppins", sans-serif;
 	font-weight: 400;
+	font-size: 15px;
 }
 
 .form-control {
 	font-size: 14px;
 	color: purple;
+}
+
+#validation-message li {
+	margin-bottom: 1em;
+}
+
+.validation-toggle li {
+	font-size: 13px;
+	margin-bottom: 1em;
+}
+
+a {
+	text-decoration: none;
+}
+
+::placeholder {
+	font-family: "Poppins", sans-serif;
 }

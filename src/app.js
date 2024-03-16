@@ -31,12 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.querySelector("#apiKey").value = apiSecret;
 	};
 
-	const addFieldGroup = () => {
-		const container = document.getElementById("field-container");
-		const fieldGroup = document.createElement("div");
-		fieldGroup.classList.add("row,item-group,p-2"); // Add class for styling purposes
-		fieldGroup.innerHTML = `
-		<div class="mb-1">
+	const addItemGroup = () => {
+		const container = document.getElementById("container");
+		const itemGroup = document.createElement("div");
+		itemGroup.classList.add("row,item-group,p-2"); // Add class for styling purposes
+		itemGroup.innerHTML = `
+		<div class="mb-1 font-monospace">
 		<input
 			type="text"
 			class="form-control"
@@ -44,34 +44,34 @@ document.addEventListener("DOMContentLoaded", () => {
 			placeholder="Item ID"
 			name="itemId[]"
 			required />
-	</div>
-	<div class="mb-1">
-		<input
-			type="number"
-			class="form-control"
-			aria-label="Quantity"
-			placeholder="Quantity"
-			name="quantity[]" />
-	</div>
-	<div class="mb-1">
-		<input
-			type="text"
-			class="form-control"
-			aria-label="Price"
-			placeholder="Price"
-			name="price[]" />
-	</div>
-	<div class="mb-2">
-		<button
-			class="btn btn-danger remove-item-group mb-4"
-			type="button">
-			Delete item
-		</button>
-	</div>
+			</div>
+		<div class="mb-1 font-monospace">
+			<input
+				type="number"
+				class="form-control"
+				aria-label="Quantity"
+				placeholder="Quantity"
+				name="quantity[]" />
+		</div>
+		<div class="mb-1 font-monospace">
+			<input
+				type="text"
+				class="form-control"
+				aria-label="Price"
+				placeholder="Price"
+				name="price[]" />
+		</div>
+		<div class="mb-2">
+			<button
+				class="btn btn-danger btn-sm remove-item-group mb-4 mt-2"
+				type="button">
+				Delete item
+			</button>
+		</div>
         `;
-		container.appendChild(fieldGroup);
+		container.appendChild(itemGroup);
 
-		fieldGroup
+		itemGroup
 			.querySelector(".remove-item-group")
 			.addEventListener("click", function () {
 				this.parentNode.parentNode.remove();
@@ -87,10 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
 
 	// Update submit button label when the validation server debugCheckbox is checked
-	const updateButtonText = () => {
+	const updateSubmitButton = () => {
 		submitButton.textContent = debugCheckbox.checked
 			? "Validate the request"
 			: "Send Refund";
+		// Check if debugCheckbox is checked
+		if (debugCheckbox.checked) {
+			submitButton.classList.remove("btn-primary");
+			submitButton.classList.add("btn-warning");
+		} else {
+			submitButton.classList.remove("btn-warning");
+			submitButton.classList.add("btn-primary");
+		}
 	};
 
 	// Update the MP URL when the validation server debugCheckbox is checked
@@ -194,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Event listener to the debugCheckbox to update the button text dynamically
 	debugCheckbox.addEventListener("change", () => {
-		updateButtonText();
+		updateSubmitButton();
 		displayValidationBox();
 		displayCodeBlock(); // Update code blocks when debug checkbox is interacted with
 	});
@@ -214,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Event listener to add item field groups
 	document.getElementById("add-item-group").addEventListener("click", () => {
-		addFieldGroup(); // Update code blocks when a new field group is added
+		addItemGroup(); // Update code blocks when a new field group is added
 	});
 
 	// Event listener to send refund payload on form submit
@@ -250,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Call functions
 	updateInputFields();
-	updateButtonText();
+	updateSubmitButton();
 	displayValidationBox();
 	displayCodeBlock(); // Initial display of code block
 

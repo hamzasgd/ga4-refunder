@@ -314,14 +314,32 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ********TEST**********
-// Run fillFormData() in the browser to auto fill
+// Run samplePayload() in the browser to auto fill
 
 // Define the function to fill form fields
-const fillFormData = () => {
+const samplePayload = async () => {
+	// Function to click the "Add Item Group" button
+	const clickAddItemButton = () => {
+		document.getElementById("add-item-group").click();
+	};
+
+	// Function to remove the last item group
+	const removeLastItemGroup = () => {
+		document.querySelectorAll("button.remove-item-group")[2].click();
+	};
+
+	// Click the "Add Item Group" button three times
+	for (let i = 0; i < 3; i++) {
+		clickAddItemButton();
+		// Wait for a short delay before clicking again
+		await new Promise((resolve) => setTimeout(resolve, 200));
+	}
+
+	// Fill form fields with example values
 	const exampleValues = {
 		clientId: "exampleClientId",
 		currency: "USD",
-		transactionAmount: "100",
+		transactionAmount: "27.47",
 		transactionId: "exampleTransactionId",
 		itemId: ["item1", "item2", "item3"], // Array of item IDs
 		quantity: [2, 1, 3], // Array of quantities corresponding to each item
@@ -357,7 +375,14 @@ const fillFormData = () => {
 			priceInputs[index].value = price;
 		}
 	});
+
+	// Wait for a short delay before removing the last item group
+	await new Promise((resolve) => setTimeout(resolve, 200));
+	removeLastItemGroup();
+
+	// Log a message once the process is completed
+	console.log("🚀 Form filled with test data & the payload is updated.");
 };
 
 // Attach the function to the window object to make it globally accessible
-window.fillFormData = fillFormData;
+window.samplePayload = samplePayload;

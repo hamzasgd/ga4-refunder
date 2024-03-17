@@ -110,10 +110,32 @@ document.addEventListener("DOMContentLoaded", () => {
 		return url;
 	};
 
+	// URL with masked API secret to print in the codeblock
+	const maskApiSecret = (url) => {
+		const apiSecretRegex = /api_secret=([^&]+)/;
+		const match = url.match(apiSecretRegex);
+		if (match) {
+			const apiSecret = match[1]; // Extract api_secret value
+			const maskedLength = Math.max(apiSecret.length - 4, 0); // Calculate the number of characters to mask
+			const maskedSecret =
+				apiSecret.substring(0, 2) +
+				"*".repeat(maskedLength) +
+				apiSecret.substring(apiSecret.length - 2); // Leave first two and last two characters unmasked
+			const maskedUrl = url.replace(
+				apiSecretRegex,
+				`api_secret=${maskedSecret}`
+			);
+			return maskedUrl;
+		} else {
+			return url; // If no api_secret found, return the original URL
+		}
+	};
+
 	// Function to display URL and payload in code blocks
 	const displayCodeBlock = () => {
 		const url = updateUrl();
-		urlBlock.textContent = `${url.replace(/\?.*$/, "")}`;
+		const maskedUrl = maskApiSecret(url);
+		urlBlock.textContent = `${maskedUrl}`;
 
 		const items = getItemsData();
 		const payload = {

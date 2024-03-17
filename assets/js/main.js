@@ -29,9 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
 
 	const addItemGroup = () => {
-		const container = document.getElementById("container");
+		const itemsContainer = document.getElementById("items-group-container");
 		const itemGroup = document.createElement("div");
-		itemGroup.classList.add("row,item-group,p-2"); // Add class for styling purposes
+		itemGroup.classList.add("row,item-group"); // Add class for styling purposes
 		itemGroup.innerHTML = `
 		<div class="row">
 		<div class="col-sm-3 mb-1 font-monospace">
@@ -62,16 +62,16 @@ document.addEventListener("DOMContentLoaded", () => {
 				value=""
 				name="price[]" />
 		</div>
-		<div class="col-sm-3 mb-2">
+		<div class="col-sm-3 mb-1">
 			<button
-				class="btn btn-danger btn-sm rounded-pill remove-item-group mb-4 px-3"
+				class="btn btn-danger btn-sm rounded-pill remove-item-group mb-4 px-3 shadow"
 				type="button">
 				Remove
 			</button>
 		</div>
 		</div>
         `;
-		container.appendChild(itemGroup);
+		itemsContainer.appendChild(itemGroup);
 
 		itemGroup
 			.querySelector(".remove-item-group")

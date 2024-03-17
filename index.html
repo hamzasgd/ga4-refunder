@@ -39,7 +39,7 @@
 
 							<sup>
 								<span
-									class="text-lowercase badge rounded-pill bg-warning fw-normal">
+									class="text-lowercase badge rounded-pill bg-success fw-normal">
 									v2.0.0
 								</span>
 							</sup>
@@ -62,13 +62,13 @@
 						<div class="row">
 							<div class="col-sm">
 								<!-- 
-								Form Start
-							-->
+									Form Start
+								-->
 								<form class="row g-3 mt-4" id="refund-form">
+									<!-- Measurement ID & MP API -->
 									<div class="card text-bg-light border border-light-subtle">
-										<div class="card-body font-monospace">
-											<!-- Measurement ID & MP API -->
-											<div class="row">
+										<div class="card-body">
+											<div class="row mt-2">
 												<div class="col-md-4">
 													<input
 														type="text"
@@ -95,21 +95,30 @@
 													</span>
 												</div>
 											</div>
+											<small class="text-body-secondary">
+												<i
+													class="bi bi-exclamation-square-fill text-warning"></i>
+												We'll store and retrieve the Measurement ID & API Secret
+												from your browser's local storage, ensuring they remain
+												private and secure. They won't be transmitted to our
+												servers, so we won't have access to this information.
+											</small>
+										</div>
+									</div>
 
-											<!-- Client ID -->
-											<div class="mb-2">
-												<input
-													type="text"
-													class="form-control"
-													aria-label="Client ID"
-													placeholder="Client ID"
-													name="clientId"
-													id="clientId"
-													value=""
-													required />
-											</div>
+									<!-- Payload inputs -->
+									<div class="card text-bg-light border border-light-subtle">
+										<div class="card-body mt-2">
+											<input
+												type="text"
+												class="form-control mb-2"
+												aria-label="Client ID"
+												placeholder="Client ID"
+												name="clientId"
+												id="clientId"
+												value=""
+												required />
 
-											<!-- Transaction ID, Value & Currency -->
 											<div class="row">
 												<div class="col-sm-4 mb-2">
 													<input
@@ -145,22 +154,25 @@
 														required />
 												</div>
 											</div>
-										</div>
-									</div>
 
-									<!-- Items group -->
-									<div class="card text-bg-light border border-light-subtle">
-										<div class="card-body">
-											<!--  Items div - groups will get appended -->
-											<div id="container"></div>
-											<!-- End of items dev -->
-											<div class="d-grid gap-2 d-md-flex">
-												<button
-													class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2"
-													type="button"
-													id="add-item-group">
-													Add item
-												</button>
+											<!-- Items group -->
+											<div class="card border border-light-subtle mt-3 mb-2">
+												<div
+													class="card-header border-0 text-body-tertiary bg-light px-3">
+													<small>Items Array (Optional)</small>
+												</div>
+												<div class="card-body px-4">
+													<div id="items-group-container"></div>
+													<!-- End of items div -->
+													<div class="d-grid gap-2 d-md-flex">
+														<button
+															class="btn btn-secondary btn-sm rounded-pill px-3 py-1"
+															type="button"
+															id="add-item-group">
+															Add item
+														</button>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -232,7 +244,7 @@
 
 									<button
 										type="submit"
-										class="btn mt-3 fw-bold rounded-pill"
+										class="btn mt-3 fw-bold rounded-pill shadow"
 										id="submit"></button>
 								</form>
 							</div>

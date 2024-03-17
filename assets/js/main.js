@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		<div class="col-sm-3 mb-1 font-monospace">
 			<input
 				type="number"
+				step="any"
 				class="form-control"
 				aria-label="Price"
 				placeholder="Price"
@@ -311,3 +312,52 @@ document.addEventListener("DOMContentLoaded", () => {
 		displayCodeBlock();
 	}
 });
+
+// ********TEST**********
+// Run fillFormData() in the browser to auto fill
+
+// Define the function to fill form fields
+const fillFormData = () => {
+	const exampleValues = {
+		clientId: "exampleClientId",
+		currency: "USD",
+		transactionAmount: "100",
+		transactionId: "exampleTransactionId",
+		itemId: ["item1", "item2", "item3"], // Array of item IDs
+		quantity: [2, 1, 3], // Array of quantities corresponding to each item
+		price: [10.99, 5.49, 8.79], // Array of prices corresponding to each item
+	};
+
+	document.getElementById("clientId").value = exampleValues.clientId;
+	document.getElementById("currency").value = exampleValues.currency;
+	document.getElementById("transactionAmount").value =
+		exampleValues.transactionAmount;
+	document.getElementById("transactionId").value = exampleValues.transactionId;
+
+	// Fill item fields dynamically
+	exampleValues.itemId.forEach((itemId, index) => {
+		const itemInputs = document.querySelectorAll('input[name="itemId[]"]');
+		if (itemInputs[index]) {
+			itemInputs[index].value = itemId;
+		}
+	});
+
+	exampleValues.quantity.forEach((quantity, index) => {
+		const quantityInputs = document.querySelectorAll(
+			'input[name="quantity[]"]'
+		);
+		if (quantityInputs[index]) {
+			quantityInputs[index].value = quantity;
+		}
+	});
+
+	exampleValues.price.forEach((price, index) => {
+		const priceInputs = document.querySelectorAll('input[name="price[]"]');
+		if (priceInputs[index]) {
+			priceInputs[index].value = price;
+		}
+	});
+};
+
+// Attach the function to the window object to make it globally accessible
+window.fillFormData = fillFormData;

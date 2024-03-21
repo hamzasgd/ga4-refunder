@@ -20,12 +20,23 @@ function generateInputObject() {
 }
 
 export default defineConfig({
+  define: {
+    'import.meta.env.VITE_PROJECT_VERSION': JSON.stringify(
+      require('./package.json').version,
+    ),
+  },
   publicDir: 'public',
   root: resolve(__dirname, 'src'),
   build: {
     outDir: '../dist',
     rollupOptions: {
       input: generateInputObject(),
+    },
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+      },
     },
   },
   server: {

@@ -1,0 +1,7 @@
+.vscode
+dist
+public
+node_modules
+vite.config.js
+postcss.config.js
+src/js/app.js

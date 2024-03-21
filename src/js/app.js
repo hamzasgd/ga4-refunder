@@ -1,3 +1,5 @@
+console.log('app.js loading...');
+
 const clientIdInput = document.getElementById('clientId');
 const concealedField = document.querySelector('.concealed-field');
 const consoleElement = document.getElementById('console-message');
@@ -26,6 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateInputFields = () => {
     document.getElementById('measurementId').value = measurementId;
     document.getElementById('apiKey').value = apiSecret;
+  };
+
+  // Get the project version from vite config
+  const printEnv = () => {
+    const projectVersion = import.meta.env.VITE_PROJECT_VERSION;
+    document.querySelector('span.release-version').innerHTML =
+      `v${projectVersion}`;
   };
 
   const addItemGroup = () => {
@@ -305,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSubmitButton();
   displayValidationBox();
   displayCodeBlock(); // Initial display of code block
+  printEnv();
 
   // Update code blocks when debug checkbox is initially checked
   if (debugCheckbox.checked) {

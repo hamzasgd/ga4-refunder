@@ -1,6 +1,6 @@
 {
-  "name": "replace-this",
-  "description": "replace-this",
+  "name": "ga4-refunder",
+  "description": "A simple app for sending refund events to GA4 via Measurement Protocol.",
   "version": "1.0.1",
   "type": "module",
   "scripts": {
@@ -31,6 +31,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "the-new-css-reset": "^1.11.2"
   }
 }

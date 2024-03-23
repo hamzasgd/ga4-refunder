@@ -1,4 +1,3 @@
-/* eslint-disable  */
 const processRefund = () => {
   document.addEventListener('DOMContentLoaded', () => {
     console.log('app.js loading...');
@@ -39,6 +38,83 @@ const processRefund = () => {
         `v${projectVersion}`;
     };
 
+    // URL with masked API secret to print in the codeblock
+    const maskApiSecret = (url) => {
+      const apiSecretRegex = /api_secret=([^&]+)/;
+      const match = url.match(apiSecretRegex);
+      if (match) {
+        const apiSecretToMask = match[1]; // Extract api_secret value
+        const maskedLength = Math.max(apiSecretToMask.length - 4, 0); // Calculate the number of characters to mask
+        const maskedSecret =
+          apiSecretToMask.substring(0, 2) +
+          '*'.repeat(maskedLength) +
+          apiSecretToMask.substring(apiSecretToMask.length - 2); // Leave first two and last two characters unmasked
+        const maskedUrl = url.replace(
+          apiSecretRegex,
+          `api_secret=${maskedSecret}`,
+        );
+        return maskedUrl;
+      }
+      return url; // If no api_secret found, return the original URL
+    };
+
+    // Update the MP URL when the validation server debugCheckbox is checked
+    const updateUrl = () => {
+      const endPoint = debugCheckbox.checked
+        ? 'debug/mp/collect'
+        : 'mp/collect';
+      const url = `https://www.google-analytics.com/${endPoint}?measurement_id=${measurementId}&api_secret=${apiSecret}`;
+      return url;
+    };
+
+    // Construct items array
+    const getItemsData = () => {
+      const itemIds = [...document.querySelectorAll('input[name="itemId[]"]')];
+      const quantities = [
+        ...document.querySelectorAll('input[name="quantity[]"]'),
+      ];
+      const prices = [...document.querySelectorAll('input[name="price[]"]')];
+
+      return itemIds.map((itemIdElement, index) => {
+        const itemId = itemIdElement.value;
+        const quantity = parseInt(quantities[index].value, 10) || 1;
+        const price = prices[index].value
+          ? parseFloat(prices[index].value).toFixed(2)
+          : undefined;
+
+        return {
+          item_id: itemId,
+          quantity,
+          price,
+        };
+      });
+    };
+
+    // Function to display URL and payload in code blocks
+    const displayCodeBlock = () => {
+      const url = updateUrl();
+      const maskedUrl = maskApiSecret(url);
+      urlBlock.textContent = `${maskedUrl}`;
+
+      const items = getItemsData();
+      const payload = {
+        client_id: clientIdInput.value,
+        events: [
+          {
+            name: 'refund',
+            params: {
+              currency: currencyInput.value.toUpperCase(),
+              transaction_id: transactionIdInput.value,
+              value: transactionAmountInput.value,
+              items,
+            },
+          },
+        ],
+      };
+      payloadBlock.textContent = `${JSON.stringify(payload, null, 2)}`;
+    };
+
+    // Add items that requires for partial refund
     const addItemGroup = () => {
       const itemsContainer = document.getElementById('items-group-container');
       const itemGroup = document.createElement('div');
@@ -87,9 +163,9 @@ const processRefund = () => {
 
       itemGroup
         .querySelector('.remove-item-group')
-        .addEventListener('click', function () {
+        .addEventListener('click', function removeItemGroupHandler() {
           this.parentNode.parentNode.remove();
-          displayCodeBlock(); // Update code blocks when a field group is removed
+          displayCodeBlock();
         });
 
       displayCodeBlock(); // Update code blocks when a new field group is added
@@ -115,59 +191,6 @@ const processRefund = () => {
       }
     };
 
-    // Update the MP URL when the validation server debugCheckbox is checked
-    const updateUrl = () => {
-      const endPoint = debugCheckbox.checked
-        ? 'debug/mp/collect'
-        : 'mp/collect';
-      const url = `https://www.google-analytics.com/${endPoint}?measurement_id=${measurementId}&api_secret=${apiSecret}`;
-      return url;
-    };
-
-    // URL with masked API secret to print in the codeblock
-    const maskApiSecret = (url) => {
-      const apiSecretRegex = /api_secret=([^&]+)/;
-      const match = url.match(apiSecretRegex);
-      if (match) {
-        const apiSecret = match[1]; // Extract api_secret value
-        const maskedLength = Math.max(apiSecret.length - 4, 0); // Calculate the number of characters to mask
-        const maskedSecret =
-          apiSecret.substring(0, 2) +
-          '*'.repeat(maskedLength) +
-          apiSecret.substring(apiSecret.length - 2); // Leave first two and last two characters unmasked
-        const maskedUrl = url.replace(
-          apiSecretRegex,
-          `api_secret=${maskedSecret}`,
-        );
-        return maskedUrl;
-      }
-      return url; // If no api_secret found, return the original URL
-    };
-
-    // Function to display URL and payload in code blocks
-    const displayCodeBlock = () => {
-      const url = updateUrl();
-      const maskedUrl = maskApiSecret(url);
-      urlBlock.textContent = `${maskedUrl}`;
-
-      const items = getItemsData();
-      const payload = {
-        client_id: clientIdInput.value,
-        events: [
-          {
-            name: 'refund',
-            params: {
-              currency: currencyInput.value.toUpperCase(),
-              transaction_id: transactionIdInput.value,
-              value: transactionAmountInput.value,
-              items,
-            },
-          },
-        ],
-      };
-      payloadBlock.textContent = `${JSON.stringify(payload, null, 2)}`;
-    };
-
     // Log messages in console
     const logMessage = (message) => {
       if (consoleElement) {
@@ -187,29 +210,7 @@ const processRefund = () => {
       }
     };
 
-    // Construct items array
-    const getItemsData = () => {
-      const itemIds = [...document.querySelectorAll('input[name="itemId[]"]')];
-      const quantities = [
-        ...document.querySelectorAll('input[name="quantity[]"]'),
-      ];
-      const prices = [...document.querySelectorAll('input[name="price[]"]')];
-
-      return itemIds.map((itemIdElement, index) => {
-        const itemId = itemIdElement.value;
-        const quantity = parseInt(quantities[index].value, 10) || 1;
-        const price = prices[index].value
-          ? parseFloat(prices[index].value).toFixed(2)
-          : undefined;
-
-        return {
-          item_id: itemId,
-          quantity,
-          price,
-        };
-      });
-    };
-
+    // Post data to Measurement Protocol server
     const sendRefund = async (event) => {
       event.preventDefault();
       const items = getItemsData();
@@ -303,17 +304,20 @@ const processRefund = () => {
       });
 
     // Event listener to reveal API key
-    concealedField.addEventListener('click', function () {
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleIcon.classList.remove('bi-eye-slash');
-        toggleIcon.classList.add('bi-eye');
-      } else {
-        passwordInput.type = 'password';
-        toggleIcon.classList.remove('bi-eye');
-        toggleIcon.classList.add('bi-eye-slash');
-      }
-    });
+    concealedField.addEventListener(
+      'click',
+      function togglePasswordVisibility() {
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          toggleIcon.classList.remove('bi-eye-slash');
+          toggleIcon.classList.add('bi-eye');
+        } else {
+          passwordInput.type = 'password';
+          toggleIcon.classList.remove('bi-eye');
+          toggleIcon.classList.add('bi-eye-slash');
+        }
+      },
+    );
 
     // Call functions
     updateInputFields();
